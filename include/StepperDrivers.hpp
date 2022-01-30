@@ -17,7 +17,10 @@ class TB6600
 		void SetPulseDelayMicroseconds(int dly);//Sets the steppers pulse delay
 		void SetStepsPerRevolution(int steps);//Sets the ammount of steps in one revolution
 		void UseInvertedDirection();//Call this in setup to invert the direction of all functions
-
+		void ClearFlags();//Used to clear any step flags that have been set from function finishing its execution
+		long long int GetAbsoluteSteps();//Gets the value of total stepper movement
+		void DisableMotor();//Disables motor movement
+		void EnableMotor();//Enables motor movement
 
 
 	private:
@@ -31,7 +34,7 @@ class TB6600
 		long long int m_absolute_steps;//[CW +][CCW -]	
 		unsigned long long int m_steps_per_rev;//Stores the steps per rev for the stepper
 		bool m_use_inverted_direction;//Swaps CW and CWW if wiring or driver is backwards
-		bool m_sequence_finished;//Saves whether the called funciton has completed its steps
+		bool m_step_flag;//Saves whether the called funciton has completed its steps
 
 
 };

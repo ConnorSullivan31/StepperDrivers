@@ -37,16 +37,20 @@ void loop()
   while(digitalRead(green_button_pin) == HIGH && digitalRead(red_button_pin) == HIGH)
   {
     //If both buttons are pushed at the same time, block any action in the program. Only check pins and do action if only one button is pressed
+    nema17.DisableMotor();
+
   }
-      if(digitalRead(green_button_pin) == HIGH && nema17.RotateSteps(-31000) == 0)//Check if green button is pushed and record its value. Sets button val state to green
+      if(digitalRead(green_button_pin) == HIGH)//Check if green button is pushed and record its value. Sets button val state to green
       {
+        nema17.EnableMotor();
         //nema17.RotateCW();
         //nema17.RotateSteps(-31000, true);
       }
       if(digitalRead(red_button_pin) == HIGH)//Check if red button is pushed and record its value. Sets button val state to red
       {
-        //nema17.RotateCCW();
-        nema17.RotateSteps(31000);
+        
+          nema17.RotateCW();
+        //nema17.RotateSteps(31000);
       }
  
 }

@@ -29,7 +29,7 @@ TB6600::TB6600(int dir_pin, int pul_pin, int ena_pin)
 	m_pulse_delay = 120;//Set the signal pulse delay in microseconds
 	m_steps_per_rev = 200;//Set default steps per revolution to 200 
 	m_absolute_steps = 0;//Used to save the absolute movement of steps from 0
-	m_sequence_finished = false;//Set default to false for the first function that will use this
+	m_step_flag = false;//Set default to false for the first function that will use this
 }
 
 void TB6600::RotateCW()
@@ -124,7 +124,7 @@ int TB6600::RotateSteps(long long int steps, bool blocking)
 		}
 	}
 
-	if(blocking == true)
+	if(blocking == true && m_step_flag == false)
 		{
 			for(long long int i = 0; i < abs(steps); i++)
 			{
@@ -145,11 +145,13 @@ int TB6600::RotateSteps(long long int steps, bool blocking)
 				}
 			}
 			m_step_count = 0;
+			m_step_flag = true;
+			return 0;
 		}
 		else
 		{
 
-			if(m_step_count < abs(steps))
+			if(m_step_count < abs(steps) && m_step_flag == false)
 			{
 				/************
 				 ************
@@ -167,9 +169,10 @@ int TB6600::RotateSteps(long long int steps, bool blocking)
 					m_absolute_steps++;
 				}
 			}
-			else
+			else if (m_step_count >= abs(steps))
 			{
 				m_step_count = 0;
+				m_step_flag = true;
 				return 0;
 			}
 		}
@@ -199,7 +202,7 @@ int TB6600::RotateStepsCW(unsigned long long int steps, bool blocking)
 		}
 	}
 
-		if(blocking == true && m_sequence_finished == false)
+		if(blocking == true && m_step_flag == false)
 		{
 			for(long long int i = 0; i < steps; i++)
 			{
@@ -214,10 +217,10 @@ int TB6600::RotateStepsCW(unsigned long long int steps, bool blocking)
 				m_absolute_steps++;
 			}
 			m_step_count = 0;
-			m_sequence_finished = true;
+			m_step_flag = true;
 			return 0;
 		}
-		else if(m_sequence_finished == false)
+		else if(m_step_flag == false)
 		{
 
 			if(m_step_count < steps)
@@ -235,10 +238,11 @@ int TB6600::RotateStepsCW(unsigned long long int steps, bool blocking)
 			else
 			{
 				m_step_count = 0;
-				m_sequence_finished = true;
+				m_step_flag = true;
 				return 0;
 			}
 		}
+	return -1;//Return -1 until step count is reached and flag is thrown
 }
 
 int TB6600::RotateStepsCCW(unsigned long long int steps, bool blocking)
@@ -444,4 +448,24 @@ void TB6600::SetStepsPerRevolution(int steps)
 void TB6600::UseInvertedDirection()
 {
 	m_use_inverted_direction = true;
+}
+
+void TB6600::ClearFlags()
+{
+	m_step_flag = false;
+}
+
+long long int TB6600::GetAbsoluteSteps()
+{
+	return m_absolute_steps;
+}
+
+void TB6600::DisableMotor()
+{
+	digitalWrite(m_enable_pin, DISABLE);//Disable Motor
+}
+
+void TB6600::EnableMotor()
+{
+	digitalWrite(m_enable_pin, ENABLE);//Enable Motor
 }
