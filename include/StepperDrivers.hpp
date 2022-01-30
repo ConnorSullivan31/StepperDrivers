@@ -10,12 +10,8 @@ class TB6600
 		void RotateCW();//Call in a loop for continuous rotation
 		void RotateCCW();//Call in a loop for continuous rotation
 		int RotateSteps(long long int steps, bool blocking = false);//Call in loop to move a certain ammount in either direction or use blocking
-		int RotateStepsCW(unsigned long long int steps, bool blocking = false);//Call in loop to move a certain ammount of steps each call or use blocking
-		int RotateStepsCCW(unsigned long long int steps, bool blocking = false);//Call in loop to move a certain ammount of steps each call or use blocking
-		int RotateRevsCW(float revs, bool blocking = false);//Call in loop to move a certain ammount of steps each call
-		int RotateRevsCCW(float revs, bool blocking = false);//Call in loop to move a certain ammount of steps each call
 		void SetPulseDelayMicroseconds(int dly);//Sets the steppers pulse delay
-		void SetStepsPerRevolution(int steps);//Sets the ammount of steps in one revolution
+		//void SetStepsPerRevolution(int steps);//Sets the ammount of steps in one revolution [Used in Beta. Let user declare in own program]
 		void UseInvertedDirection();//Call this in setup to invert the direction of all functions
 		void ClearFlags();//Used to clear any step flags that have been set from function finishing its execution
 		long long int GetAbsoluteSteps();//Gets the value of total stepper movement
@@ -32,7 +28,7 @@ class TB6600
 		int m_pulse_delay;//Stores the delay between signal pulses
 		unsigned long long int m_step_count;//Stores the step count for a function
 		long long int m_absolute_steps;//[CW +][CCW -]	
-		unsigned long long int m_steps_per_rev;//Stores the steps per rev for the stepper
+		//unsigned long long int m_steps_per_rev;//Stores the steps per rev for the stepper [Used in Beta. Let user declare in own program]
 		bool m_use_inverted_direction;//Swaps CW and CWW if wiring or driver is backwards
 		bool m_step_flag;//Saves whether the called funciton has completed its steps
 
