@@ -149,7 +149,6 @@ int TB6600::RotateSteps(long long int steps, bool blocking)
 		}
 		else
 		{
-
 			if(m_step_count < abs(steps) && m_step_flag == false)
 			{
 				/************
@@ -203,7 +202,7 @@ int TB6600::RotateStepsCW(unsigned long long int steps, bool blocking)
 
 		if(blocking == true && m_step_flag == false)
 		{
-			for(long long int i = 0; i < steps; i++)
+			for(unsigned long long int i = 0; i < steps; i++)
 			{
 				/************
 				 ************
@@ -219,10 +218,10 @@ int TB6600::RotateStepsCW(unsigned long long int steps, bool blocking)
 			m_step_flag = true;
 			return 0;
 		}
-		else if(m_step_flag == false)
+		else
 		{
 
-			if(m_step_count < steps)
+			if(m_step_count < steps && m_step_flag == false)
 			{
 				/************
 				 ************
@@ -263,9 +262,9 @@ int TB6600::RotateStepsCCW(unsigned long long int steps, bool blocking)
 		}
 	}
 		
-		if(blocking == true)
+		if(blocking == true && m_step_flag == false)
 		{
-			for(int i = 0; i < steps; i++)
+			for(unsigned long long int i = 0; i < steps; i++)
 			{
 				/************
 				 ************
@@ -278,11 +277,13 @@ int TB6600::RotateStepsCCW(unsigned long long int steps, bool blocking)
 				m_absolute_steps--;
 			}
 			m_step_count = 0;
+			m_step_flag = true;
 			return 0;
 		}
 		else
 		{
-			if(m_step_count < steps)
+
+			if(m_step_count < steps && m_step_flag == false)
 			{
 				/************
 				 ************
@@ -297,9 +298,11 @@ int TB6600::RotateStepsCCW(unsigned long long int steps, bool blocking)
 			else
 			{
 				m_step_count = 0;
+				m_step_flag = true;
 				return 0;
 			}
 		}
+	return -1;//Return -1 until steps are reached
 }
 
 /////////
@@ -323,9 +326,9 @@ int TB6600::RotateRevsCW(float revs, bool blocking)
 		}
 	}
 
-		if(blocking == true)
+		if(blocking == true && m_step_flag == false)
 		{
-			for(int i = 0; i < static_cast<int>(revs*m_steps_per_rev); i++)
+			for(unsigned long long int i = 0; i < static_cast<unsigned long long int>(abs(revs)*m_steps_per_rev); i++)
 			{
 				/************
 				 ************
@@ -338,12 +341,13 @@ int TB6600::RotateRevsCW(float revs, bool blocking)
 				m_absolute_steps++;
 			}
 			m_step_count = 0;
+			m_step_flag = true;
 			return 0;
 		}
 		else
 		{
 
-			if(m_step_count < static_cast<int>(revs*m_steps_per_rev))
+			if(m_step_count < static_cast<unsigned long long int>(abs(revs)*m_steps_per_rev) && m_step_flag == false)
 			{
 				/************
 				 ************
@@ -358,9 +362,11 @@ int TB6600::RotateRevsCW(float revs, bool blocking)
 			else
 			{
 				m_step_count = 0;
+				m_step_flag = true;
 				return 0;
 			}
 		}
+	return -1;//Return -1 until steps are reached
 }
 
 int TB6600::RotateRevsCCW(float revs, bool blocking)
@@ -382,9 +388,9 @@ int TB6600::RotateRevsCCW(float revs, bool blocking)
 		}
 	}
 
-		if(blocking == true)
+		if(blocking == true && m_step_flag == false)
 		{
-			for(int i = 0; i < static_cast<int>(revs*m_steps_per_rev); i++)
+			for(unsigned long long int i = 0; i < static_cast<unsigned long long int>(abs(revs)*m_steps_per_rev); i++)
 			{
 				/************
 				 ************
@@ -397,12 +403,13 @@ int TB6600::RotateRevsCCW(float revs, bool blocking)
 				m_absolute_steps--;
 			}
 			m_step_count = 0;
+			m_step_flag = true;
 			return 0;
 		}
 		else
 		{
 
-			if(m_step_count < static_cast<int>(revs*m_steps_per_rev))
+			if(m_step_count < static_cast<unsigned long long int>(abs(revs)*m_steps_per_rev) && m_step_flag == false)
 			{
 				/************
 				 ************
@@ -417,9 +424,11 @@ int TB6600::RotateRevsCCW(float revs, bool blocking)
 			else
 			{
 				m_step_count = 0;
+				m_step_flag = true;
 				return 0;
 			}
 		}
+	return -1;//Return -1 until steps are reached
 }
 
 
