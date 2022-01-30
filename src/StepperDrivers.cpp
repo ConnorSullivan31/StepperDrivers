@@ -92,7 +92,6 @@ void TB6600::RotateCCW()
 
 int TB6600::RotateSteps(long long int steps, bool blocking)
 {
-	static bool steps_complete = false;//Used to store the whether the steps in a function were complete or not
 
 	//Use the if statment to decide directions based on the sign of steps. Counting will be done with the absolute value of steps
 	if(m_use_inverted_direction == true)//Use opposite direction incase wired direction is reversed
