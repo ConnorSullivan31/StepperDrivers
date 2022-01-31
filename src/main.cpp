@@ -21,7 +21,6 @@ void setup()
 Serial.begin(9600);
 
 nema17.SetPulseDelayMicroseconds(60);//Set up stepper values
-nema17.SetStepsPerRevolution(3200);//" " " "
 
 pinMode(green_button_pin, INPUT);//Set pin to read push button value
 pinMode(red_button_pin, INPUT);//Set pin to read push button value
