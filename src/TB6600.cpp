@@ -1,6 +1,13 @@
 #include "StepperDrivers.hpp"
 #include <Arduino.h>
 
+/**
+ * @brief This is the source file for the TB6600 class declared in StepperDrivers.hpp
+ * 
+ */
+
+
+
 enum MotorPinOps {
   CCW = 0,//Counterclockwise direction equates to setting dir_pin to LOW/0
   CW = 1,//Clockwise direction equates to setting dir_pin to HIGH/1
